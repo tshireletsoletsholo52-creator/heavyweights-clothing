@@ -1,0 +1,80 @@
+// Prisma schema for the clothing store
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+ 
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String
+  basePrice   Int       // stored in cents to avoid floating point issues
+  category    String
+  images      String[]  // array of image URLs
+  variants    Variant[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Variant {
+  id                 String              @id @default(cuid())
+  product            Product             @relation(fields: [productId], references: [id])
+  productId          String
+  size               String
+  color              String
+  images             String[]            @default([])
+  sku                String              @unique
+  stock              Int                 @default(0)
+  orderItems         OrderItem[]
+  restockSubscribers RestockSubscriber[]
+
+  @@unique([productId, size, color])
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  orders    Order[]
+  createdAt DateTime @default(now())
+}
+model Order {
+  id            String      @id @default(cuid())
+  customer      Customer?   @relation(fields: [customerId], references: [id])
+  customerId    String?
+  items         OrderItem[]
+  status        String      @default("pending") // pending, paid, shipped, cancelled
+  totalAmount   Int         // cents
+  stripeSessionId String?   @unique
+  shippingAddress Json?
+  createdAt     DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  variant   Variant @relation(fields: [variantId], references: [id])
+  variantId String
+  quantity  Int
+  price     Int     // price at time of purchase, cents
+}
+
+model RestockSubscriber {
+  id         String   @id @default(cuid())
+  email      String
+  variant    Variant  @relation(fields: [variantId], references: [id])
+  variantId  String
+  notified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@unique([email, variantId])
+}

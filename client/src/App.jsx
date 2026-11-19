@@ -4,8 +4,8 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
 import AccountPage from './pages/AccountPage';
-// ...
-<Route path="/account" element={<AccountPage />} />
+import SearchPage from './pages/SearchPage';
+
 function App() {
   return (
     <Routes>
@@ -13,6 +13,8 @@ function App() {
       <Route path="/products/:slug" element={<ProductDetailPage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+      <Route path="/account" element={<AccountPage />} />
+      <Route path="/search" element={<SearchPage />} />
     </Routes>
   );
 }

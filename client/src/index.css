@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root {
+@theme {
   --color-ink: #0E0E0E;
   --color-bone: #F5F3EF;
   --color-rust: #C4432B;
@@ -17,4 +17,8 @@ body {
 
 .font-display {
   font-family: var(--font-display);
+}
+
+html {
+  scroll-padding-top: 5rem; /* stops anchor links like #shop hiding under the sticky header */
 }

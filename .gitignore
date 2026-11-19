@@ -1,4 +1,26 @@
-.env
-.env.*
-!.env.example
+# Dependencies
 node_modules/
+server/node_modules/
+client/node_modules/
+
+# Environment variables (never commit secrets)
+.env
+.env.local
+server/.env
+client/.env
+
+# Build output
+client/dist/
+client/build/
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
